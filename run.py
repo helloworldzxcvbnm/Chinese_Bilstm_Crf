@@ -155,7 +155,11 @@ def evaluate_model(model, test_sentences, test_labels):
             sentence_bio = [ix_to_tag[tag] for tag in predicted_tags[0]]
             bio_predictions.append(sentence_bio)
 
-    accuracy = sum([1 for true, pred in zip(true_labels, predictions) if pred == true]) / len(true_labels)
+    total = 0
+    for i in true_labels:
+        if i != 0:
+            total += 1
+    accuracy = sum([1 for true, pred in zip(true_labels, predictions) if pred == true != 0]) / total
 
     # 生成分类报告
     report = classification_report(true_labels, predictions, target_names=list(ix_to_tag.values()),
